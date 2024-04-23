@@ -47,7 +47,7 @@ def write_data_minio():
         access_key="minio",
         secret_key="minio123"
     )
-    bucket: str = "BucketYellowTaxi"
+    bucket: str = "bucket-yellow-taxi"
     found = client.bucket_exists(bucket)
     if not found:
         client.make_bucket(bucket)
