@@ -69,8 +69,13 @@ def main() -> None:
     # folder_path: str = r'..\..\data\raw'
     script_dir = os.path.dirname(os.path.abspath(__file__))
     # Construct the relative path to the folder
+    
+    print(f'script dir: {script_dir}')
+    
     folder_path = os.path.join(script_dir, '..', '..', 'data', 'raw')
 
+    print(f'folder path: {folder_path}')
+    
     parquet_files = [f for f in os.listdir(folder_path) if
                      f.lower().endswith('.parquet') and os.path.isfile(os.path.join(folder_path, f))]
 
