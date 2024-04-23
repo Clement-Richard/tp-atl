@@ -17,10 +17,17 @@ def grab_data() -> None:
     """
 
     # Define the URL of the data source
-    url = "http://example.com/data.parquet"
+    urls = ["https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-11.parquet", "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-12.parquet"]
 
     # Define the path to save the file
-    save_path = "../../data/raw/data.parquet"
+    for i, url in enumerate(urls):
+        # Define the path to save the file
+        save_path = f"../../data/raw/data{i+1}.parquet"
+
+        # Use urllib.request.urlretrieve to download the data file
+        urllib.request.urlretrieve(url, save_path)
+
+        print(f"Data downloaded from {url} and saved to {save_path}")
 
     # Use urllib.request.urlretrieve to download the data file
     urllib.request.urlretrieve(url, save_path)
