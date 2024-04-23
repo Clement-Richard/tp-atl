@@ -24,6 +24,7 @@ def grab_data() -> None:
         # Define the path to save the file
         save_path = f"../../data/raw/data{i+1}.parquet"
 
+        print(f'{save_path}')
         # Use urllib.request.urlretrieve to download the data file
         urllib.request.urlretrieve(url, save_path)
 
@@ -41,7 +42,7 @@ def write_data_minio():
     Ne pas faire cette méthode pour le moment
     """
     client = Minio(
-        "skymunt.com:9000",
+        "localhost:9000",
         secure=False,
         access_key="minio",
         secret_key="minio123"
