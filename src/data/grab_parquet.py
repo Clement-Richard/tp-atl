@@ -18,18 +18,16 @@ def grab_data() -> None:
     This methods takes no arguments and returns nothing.
     """
 
-    # Define the URL of the data source
-    urls = ["https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-11.parquet", "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-12.parquet"]
+    # Define the URL of the data source (December 2023)
+    url = "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-12.parquet"
 
     # Define the path to save the file
-    for i, url in enumerate(urls):
-        # Define the path to save the file
-        save_path = f"data/raw/data{i+1}.parquet"
+    save_path = "data/raw/yellow_tripdata_2023-12.parquet"  # Descriptive filename
 
-        # Use urllib.request.urlretrieve to download the data file
-        urllib.request.urlretrieve(url, save_path)
+    # Use urllib.request.urlretrieve to download the data file
+    urllib.request.urlretrieve(url, save_path)
 
-        print(f"Data downloaded from {url} and saved to {save_path}")
+    print(f"Data downloaded from {url} and saved to {save_path}")
 
     # Use urllib.request.urlretrieve to download the data file
     urllib.request.urlretrieve(url, save_path)
