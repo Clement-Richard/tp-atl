@@ -27,11 +27,6 @@ def grab_data() -> None:
     # Use urllib.request.urlretrieve to download the data file
     urllib.request.urlretrieve(url, save_path)
 
-    print(f"Data downloaded from {url} and saved to {save_path}")
-
-    # Use urllib.request.urlretrieve to download the data file
-    urllib.request.urlretrieve(url, save_path)
-
     print(f"Data downloaded and saved to {save_path}")
 
 
