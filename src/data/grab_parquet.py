@@ -16,6 +16,17 @@ def grab_data() -> None:
     This methods takes no arguments and returns nothing.
     """
 
+    # Define the URL of the data source
+    url = "http://example.com/data.parquet"
+
+    # Define the path to save the file
+    save_path = "../../data/raw/data.parquet"
+
+    # Use urllib.request.urlretrieve to download the data file
+    urllib.request.urlretrieve(url, save_path)
+
+    print(f"Data downloaded and saved to {save_path}")
+
 
 def write_data_minio():
     """
