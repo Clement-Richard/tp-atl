@@ -2,6 +2,7 @@ from minio import Minio
 import urllib.request
 import pandas as pd
 import sys
+import os
 
 def main():
     grab_data()
@@ -39,7 +40,6 @@ def grab_data() -> None:
 def write_data_minio():
     """
     This method put all Parquet files into Minio
-    Ne pas faire cette méthode pour le moment
     """
     client = Minio(
         "localhost:9000",
@@ -52,7 +52,22 @@ def write_data_minio():
     if not found:
         client.make_bucket(bucket)
     else:
-        print("Bucket " + bucket + " existe déjà")
+        print(f"Bucket {bucket} already exists")
+
+    # Define the path where the files are saved
+    save_dir = "data/raw"
+
+    # Get a list of all files in the directory
+    files = os.listdir(save_dir)
+
+    # Filter the list to only include .parquet files
+    parquet_files = [f for f in files if f.endswith('.parquet')]
+
+    # Upload each file to the Minio bucket
+    for file in parquet_files:
+        file_path = os.path.join(save_dir, file)
+        client.fput_object(bucket, file, file_path)
+        print(f"File {file} uploaded to {bucket}")
 
 if __name__ == '__main__':
     sys.exit(main())
