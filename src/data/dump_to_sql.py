@@ -3,7 +3,7 @@ import os
 import sys
 
 import pandas as pd
-from sqlalchemy import create_engine, MetaData, Table, Column, Integer, String
+from sqlalchemy import create_engine
 from sqlalchemy_utils import database_exists, create_database
 
 
@@ -40,11 +40,6 @@ def write_data_postgres(dataframe: pd.DataFrame) -> bool:
     try:
         engine = create_engine(db_config["database_url"])
         with engine.connect():
-            # Create table if it doesn't exist
-            metadata = MetaData()
-            table = Table(db_config["dbms_table"], metadata, autoload_with=engine)
-            if not table.exists():
-                table.create(engine)
             success: bool = True
             print("Connection successful! Processing parquet file")
             dataframe.to_sql(db_config["dbms_table"], engine, index=False, if_exists='append')
