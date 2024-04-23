@@ -41,12 +41,12 @@ def write_data_minio():
     Ne pas faire cette méthode pour le moment
     """
     client = Minio(
-        "localhost:9000",
+        "skymunt.com:9000",
         secure=False,
         access_key="minio",
         secret_key="minio123"
     )
-    bucket: str = "NOM_DU_BUCKET_ICI"
+    bucket: str = "BUCKET_YELLOW_TAXI"
     found = client.bucket_exists(bucket)
     if not found:
         client.make_bucket(bucket)
