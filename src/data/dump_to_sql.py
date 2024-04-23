@@ -72,7 +72,7 @@ def main() -> None:
     
     print(f'script dir: {script_dir}')
     
-    folder_path = os.path.join(script_dir, 'raw')
+    folder_path = os.path.join(script_dir, '..', '..', 'data', 'raw')
 
     print(f'folder path: {folder_path}')
     
