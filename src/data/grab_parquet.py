@@ -1,31 +1,39 @@
 from minio import Minio
-import requests
+import urllib.request
 import pandas as pd
 import sys
-import os
 
 def main():
     grab_data()
     
+
 def grab_data() -> None:
+    """Grab the data from New York Yellow Taxi
+
+    This method download x files of the New York Yellow Taxi. 
+    
+    Files need to be saved into "../../data/raw" folder
+    This methods takes no arguments and returns nothing.
+    """
+
+    # Define the URL of the data source
     urls = ["https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-11.parquet", "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2023-12.parquet"]
 
+    # Define the path to save the file
     for i, url in enumerate(urls):
-        save_path = f"../../data/raw/data{i+1}.parquet"
+        # Define the path to save the file
+        save_path = f"data/raw/data{i+1}.parquet"
 
-        # Create the directory if it does not exist
-        os.makedirs(os.path.dirname(save_path), exist_ok=True)
-
-        # Use requests to download the data file
-        response = requests.get(url)
-
-        print(response)
-        
-        # Write the content to a file
-        with open(save_path, 'wb') as file:
-            file.write(response.content)
+        # Use urllib.request.urlretrieve to download the data file
+        urllib.request.urlretrieve(url, save_path)
 
         print(f"Data downloaded from {url} and saved to {save_path}")
+
+    # Use urllib.request.urlretrieve to download the data file
+    urllib.request.urlretrieve(url, save_path)
+
+    print(f"Data downloaded and saved to {save_path}")
+
 
 def write_data_minio():
     """
