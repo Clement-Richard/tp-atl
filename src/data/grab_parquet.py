@@ -5,6 +5,7 @@ import sys
 
 def main():
     grab_data()
+    write_data_minio()
     
 
 def grab_data() -> None:
