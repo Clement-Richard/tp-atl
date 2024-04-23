@@ -4,6 +4,7 @@ import sys
 
 import pandas as pd
 from sqlalchemy import create_engine
+from sqlalchemy_utils import database_exists, create_database
 
 
 def write_data_postgres(dataframe: pd.DataFrame) -> bool:
@@ -31,6 +32,11 @@ def write_data_postgres(dataframe: pd.DataFrame) -> bool:
         f"{db_config['dbms_engine']}://{db_config['dbms_username']}:{db_config['dbms_password']}@"
         f"{db_config['dbms_ip']}:{db_config['dbms_port']}/{db_config['dbms_database']}"
     )
+    
+    # Create database if it doesn't exist
+    if not database_exists(db_config["database_url"]):
+        create_database(db_config["database_url"])
+
     try:
         engine = create_engine(db_config["database_url"])
         with engine.connect():
