@@ -1,5 +1,6 @@
 import os
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
+from sqlalchemy import text
 from sqlalchemy_utils import database_exists, create_database
 
 def execute_sql_script(script_path: str, engine: create_engine):
@@ -10,10 +11,16 @@ def execute_sql_script(script_path: str, engine: create_engine):
         - script_path (str): Path to the SQL script file.
         - engine (create_engine): SQLAlchemy engine instance.
     """
-    with open(script_path, 'r') as script_file:
-        sql_script = script_file.read()
-        with engine.connect() as connection:
-            connection.execute(text(sql_script))
+    try:
+        with open(script_path, 'r') as script_file:
+            sql_script = text(script_file.read())
+            print(f"SQL script as text: {sql_script}")
+            with engine.connect() as connection:
+                print(f"Executing SQL script: {script_path}")
+                connection.execute(sql_script)
+                print(f"SQL script execution completed: {script_path}")
+    except Exception as e:
+        print(f"Error executing SQL script {script_path}: {e}")
 
 def main():
     # Database connection parameters
