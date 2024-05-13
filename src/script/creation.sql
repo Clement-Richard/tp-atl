@@ -1,22 +1,38 @@
--- Création de la table vendor en premier
 CREATE TABLE IF NOT EXISTS public.vendor (
     vendor_id integer PRIMARY KEY,
     vendor_name text
 );
 
--- Création de la table rate_code en deuxième
+INSERT INTO public.vendor (vendor_id, vendor_name)
+VALUES (1, 'Creative Mobile Technologies, LLC'),
+       (2, 'VeriFone Inc.');
+
 CREATE TABLE IF NOT EXISTS public.rate_code (
     rate_code_id integer PRIMARY KEY,
     rate_description text
 );
 
--- Création de la table payment_type en troisième
+INSERT INTO public.rate_code (rate_code_id, rate_description)
+VALUES (1, 'Standard rate'),
+       (2, 'JFK'),
+       (3, 'Newark'),
+       (4, 'Nassau or Westchester'),
+       (5, 'Negotiated fare'),
+       (6, 'Group ride');
+
 CREATE TABLE IF NOT EXISTS public.payment_type (
     payment_type_id integer PRIMARY KEY,
     payment_description text
 );
 
--- Création de la table fact_trip en dernier, après que les tables référencées existent
+INSERT INTO public.payment_type (payment_type_id, payment_description)
+VALUES (1, 'Credit card'),
+       (2, 'Cash'),
+       (3, 'No charge'),
+       (4, 'Dispute'),
+       (5, 'Unknown'),
+       (6, 'Voided trip');
+
 CREATE TABLE IF NOT EXISTS public.fact_trip (
     trip_id SERIAL PRIMARY KEY,
     vendor_id integer REFERENCES public.vendor(vendor_id),
@@ -38,12 +54,10 @@ CREATE TABLE IF NOT EXISTS public.fact_trip (
     airport_fee double precision
 );
 
--- Ajout des index après la création des tables
 CREATE INDEX idx_vendor_id ON public.fact_trip (vendor_id);
 CREATE INDEX idx_rate_code_id ON public.fact_trip (rate_code_id);
 CREATE INDEX idx_payment_type_id ON public.fact_trip (payment_type);
 
--- Création de la vue matérialisée mv_dim_location après que les tables référencées existent
 CREATE MATERIALIZED VIEW mv_dim_location AS
 SELECT DISTINCT pulocationid AS location_id, 'Pickup' AS location_type
 FROM public.nyc_raw
@@ -51,10 +65,8 @@ UNION
 SELECT DISTINCT dolocationid AS location_id, 'Dropoff' AS location_type
 FROM public.nyc_raw;
 
--- Ajout des contraintes de clé étrangère après la création des tables référencées
 ALTER TABLE public.fact_trip ADD CONSTRAINT fk_vendor_id FOREIGN KEY (vendor_id) REFERENCES public.vendor(vendor_id);
 ALTER TABLE public.fact_trip ADD CONSTRAINT fk_rate_code_id FOREIGN KEY (rate_code_id) REFERENCES public.rate_code(rate_code_id);
 ALTER TABLE public.fact_trip ADD CONSTRAINT fk_payment_type_id FOREIGN KEY (payment_type) REFERENCES public.payment_type(payment_type_id);
 
--- Ajout de la contrainte de clé primaire à la vue matérialisée
 ALTER TABLE mv_dim_location ADD PRIMARY KEY (location_id, location_type);
