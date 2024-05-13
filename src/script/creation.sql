@@ -58,15 +58,6 @@ CREATE INDEX idx_vendor_id ON public.fact_trip (vendor_id);
 CREATE INDEX idx_rate_code_id ON public.fact_trip (rate_code_id);
 CREATE INDEX idx_payment_type_id ON public.fact_trip (payment_type);
 
-CREATE MATERIALIZED VIEW mv_dim_location AS
-SELECT DISTINCT pulocationid AS location_id, 'Pickup' AS location_type
-FROM public.nyc_raw
-UNION
-SELECT DISTINCT dolocationid AS location_id, 'Dropoff' AS location_type
-FROM public.nyc_raw;
-
 ALTER TABLE public.fact_trip ADD CONSTRAINT fk_vendor_id FOREIGN KEY (vendor_id) REFERENCES public.vendor(vendor_id);
 ALTER TABLE public.fact_trip ADD CONSTRAINT fk_rate_code_id FOREIGN KEY (rate_code_id) REFERENCES public.rate_code(rate_code_id);
 ALTER TABLE public.fact_trip ADD CONSTRAINT fk_payment_type_id FOREIGN KEY (payment_type) REFERENCES public.payment_type(payment_type_id);
-
-ALTER TABLE mv_dim_location ADD PRIMARY KEY (location_id, location_type);
