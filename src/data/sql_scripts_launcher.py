@@ -47,7 +47,7 @@ def main():
     
     print(f'script dir: {script_dir}')
     
-    folder_path = os.path.join(script_dir, '..', '..', 'script')
+    folder_path = os.path.join(script_dir, '..', 'script')
     
     # Get all SQL script files in the directory
     sql_scripts = [f for f in os.listdir(folder_path) if f.lower().endswith('.sql') and os.path.isfile(os.path.join(folder_path, f))]
