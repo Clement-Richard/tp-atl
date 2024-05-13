@@ -12,7 +12,7 @@ def write_data_postgres(dataframe: pd.DataFrame) -> bool:
     Dumps a Dataframe to the DBMS engine
 
     Parameters:
-        - dataframe (pd.DataFrame) : The dataframe to dump into the DBMS engine
+        - dataframe (pd.Dataframe) : The dataframe to dump into the DBMS engine
 
     Returns:
         - bool : True if the connection to the DBMS and the dump to the DBMS is successful, False if either
@@ -25,47 +25,24 @@ def write_data_postgres(dataframe: pd.DataFrame) -> bool:
         "dbms_ip": "localhost",
         "dbms_port": "15432",
         "dbms_database": "nyc_warehouse",
-        "dbms_table": "nyc_raw",
-        "dbms_database2": "nyc_datamart",
-        "sql_script_path": "src\script\creation.sql"
+        "dbms_table": "nyc_raw"
     }
 
-    # First database URL
     db_config["database_url"] = (
         f"{db_config['dbms_engine']}://{db_config['dbms_username']}:{db_config['dbms_password']}@"
         f"{db_config['dbms_ip']}:{db_config['dbms_port']}/{db_config['dbms_database']}"
     )
     
-    # Second database URL
-    db_config["database_url2"] = (
-        f"{db_config['dbms_engine']}://{db_config['dbms_username']}:{db_config['dbms_password']}@"
-        f"{db_config['dbms_ip']}:{db_config['dbms_port']}/{db_config['dbms_database2']}"
-    )
-
-    # Create first database if it doesn't exist
+    # Create database if it doesn't exist
     if not database_exists(db_config["database_url"]):
         create_database(db_config["database_url"])
 
-    # Create second database if it doesn't exist
-    if not database_exists(db_config["database_url2"]):
-        create_database(db_config["database_url2"])
-
     try:
-        # Connect to the first database
         engine = create_engine(db_config["database_url"])
         with engine.connect():
             success: bool = True
-            print("Connection to the first database successful! Processing DataFrame")
-            # Write DataFrame to the first database
+            print("Connection successful! Processing parquet file")
             dataframe.to_sql(db_config["dbms_table"], engine, index=False, if_exists='append')
-
-        # Connect to the second database
-        engine2 = create_engine(db_config["database_url2"])
-        with engine2.connect() as conn2:
-            # Execute SQL script in the second database
-            with open(db_config["sql_script_path"], "r") as sql_file:
-                sql_script = sql_file.read()
-                conn2.execute(sql_script)
 
     except Exception as e:
         success: bool = False
