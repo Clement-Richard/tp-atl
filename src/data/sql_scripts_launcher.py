@@ -1,5 +1,5 @@
 import os
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 from sqlalchemy_utils import database_exists, create_database
 
 def execute_sql_script(script_path: str, engine: create_engine):
@@ -13,7 +13,7 @@ def execute_sql_script(script_path: str, engine: create_engine):
     with open(script_path, 'r') as script_file:
         sql_script = script_file.read()
         with engine.connect() as connection:
-            connection.execute(sql_script)
+            connection.execute(text(sql_script))
 
 def main():
     # Database connection parameters
