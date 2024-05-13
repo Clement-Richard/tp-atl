@@ -27,7 +27,7 @@ def write_data_postgres(dataframe: pd.DataFrame) -> bool:
         "dbms_database": "nyc_warehouse",
         "dbms_table": "nyc_raw",
         "dbms_database2": "nyc_datamart",
-        "sql_script_path": "data\datamart\creation.sql"
+        "sql_script_path": "src\script\creation.sql"
     }
 
     # First database URL
