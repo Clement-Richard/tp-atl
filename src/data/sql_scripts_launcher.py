@@ -23,7 +23,7 @@ def main():
         "dbms_password": "admin",
         "dbms_ip": "localhost",
         "dbms_port": "15432",
-        "dbms_database": "nyc_data_mart"
+        "dbms_database": "nyc_datamart"
     }
     
     # Constructing the database URL
