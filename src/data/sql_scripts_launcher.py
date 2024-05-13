@@ -16,8 +16,10 @@ def execute_sql_script(script_path: str, engine: create_engine):
             print(f"Executing SQL script: {script_path}")
             with engine.connect() as connection:
                 connection.execute(sql_script)
+                print("SQL script execution completed, committing...")
                 connection.commit()
-            print(f"SQL script execution completed: {script_path}")
+                print("Commit completed!")
+
     except Exception as e:
         print(f"Error executing SQL script {script_path}: {e}")
 
